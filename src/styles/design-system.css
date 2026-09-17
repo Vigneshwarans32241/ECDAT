@@ -1,89 +1,81 @@
-﻿/* ECDAT Design System — Light/Pastel Enterprise Theme */
-
+﻿/* ECDAT Design System — Signal / Editorial Light Theme */
 :root {
-  /* Page backgrounds */
-  --bg-page: #f4f6f9;
-  --bg-sidebar: #ffffff;
-  --bg-topbar: #ffffff;
+  --bg-page: #f4f7fb;
+  --bg-sidebar: #fbfdff;
+  --bg-topbar: rgba(255,255,255,.86);
   --bg-card: #ffffff;
   --bg-surface-elevated: #ffffff;
-  --bg-surface-subtle: #f8f9fb;
-  --bg-hover: #f1f3f7;
-  --bg-active: #e8ecf4;
-  --bg-selected: #eef2ff;
+  --bg-surface-subtle: #f7faff;
+  --bg-hover: #eef4fb;
+  --bg-active: #e7effa;
+  --bg-selected: #eaf2ff;
 
-  /* Borders */
-  --border-default: #e2e5eb;
-  --border-light: #eef0f4;
-  --border-strong: #d1d5db;
-  --border-accent: #3b6fe0;
+  --border-default: #d9e3f0;
+  --border-light: #eaf0f7;
+  --border-strong: #c3d1e4;
+  --border-accent: #80a9e8;
 
-  /* Text */
-  --text-primary: #111827;
-  --text-secondary: #4b5563;
-  --text-muted: #9ca3af;
+  --text-primary: #132238;
+  --text-secondary: #52647b;
+  --text-muted: #8fa0b5;
   --text-inverse: #ffffff;
   --text-link: #2563eb;
 
-  /* Accent / brand */
-  --accent-primary: #1e3a5f;
+  --accent-primary: #163a63;
   --accent-secondary: #2563eb;
   --accent-hover: #1d4ed8;
-  --accent-subtle: #eef2ff;
+  --accent-subtle: #eaf2ff;
 
-  /* Risk semantic colors */
-  --risk-critical-bg: #fde8e8;
-  --risk-critical-text: #b91c1c;
-  --risk-critical-border: #f87171;
+  --risk-critical-bg: #fff0f0;
+  --risk-critical-text: #b42318;
+  --risk-critical-border: #f7b3ae;
   --risk-critical-solid: #dc2626;
-  --risk-high-bg: #fff3e0;
-  --risk-high-text: #b45309;
-  --risk-high-border: #fbbf24;
+  --risk-high-bg: #fff7e8;
+  --risk-high-text: #a15c00;
+  --risk-high-border: #f6cd84;
   --risk-high-solid: #f59e0b;
-  --risk-medium-bg: #fefce8;
-  --risk-medium-text: #a16207;
-  --risk-medium-border: #facc15;
+  --risk-medium-bg: #fffbea;
+  --risk-medium-text: #946200;
+  --risk-medium-border: #f1db79;
   --risk-medium-solid: #eab308;
-  --risk-low-bg: #ecfdf5;
-  --risk-low-text: #047857;
-  --risk-low-border: #34d399;
+  --risk-low-bg: #ebfaf3;
+  --risk-low-text: #13795b;
+  --risk-low-border: #9fe1c2;
   --risk-low-solid: #22c55e;
 
-  /* Status colors */
-  --status-info-bg: #eff6ff;
+  --status-info-bg: #edf5ff;
   --status-info-text: #1d4ed8;
   --status-info-solid: #3b82f6;
-  --status-pqc-bg: #ecfeff;
+  --status-pqc-bg: #e9fbfd;
   --status-pqc-text: #0e7490;
   --status-pqc-solid: #06b6d4;
-  --status-success-bg: #f0fdf4;
+  --status-success-bg: #edf9f1;
   --status-success-text: #15803d;
-  --status-warning-bg: #fffbeb;
-  --status-warning-text: #b45309;
-  --status-deprecated-bg: #fef2f2;
+  --status-warning-bg: #fff8e7;
+  --status-warning-text: #a15c00;
+  --status-deprecated-bg: #fff0f0;
   --status-deprecated-text: #991b1b;
 
-  /* Typography */
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-  --fs-xs: 0.6875rem;    /* 11px */
-  --fs-sm: 0.8125rem;    /* 13px */
-  --fs-base: 0.875rem;   /* 14px */
-  --fs-md: 0.9375rem;    /* 15px */
-  --fs-lg: 1.125rem;     /* 18px */
-  --fs-xl: 1.375rem;     /* 22px */
-  --fs-2xl: 1.75rem;     /* 28px */
-  --fs-3xl: 2.25rem;     /* 36px */
-  --fs-metric: 2.5rem;   /* 40px */
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display: Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  --fs-xs: .6875rem;
+  --fs-sm: .8125rem;
+  --fs-base: .875rem;
+  --fs-md: .9375rem;
+  --fs-lg: 1.125rem;
+  --fs-xl: 1.375rem;
+  --fs-2xl: 1.75rem;
+  --fs-3xl: 2.25rem;
+  --fs-metric: 2.5rem;
   --fw-normal: 400;
   --fw-medium: 500;
   --fw-semibold: 600;
-  --fw-bold: 700;
-  --lh-tight: 1.2;
+  --fw-bold: 750;
+  --lh-tight: 1.15;
   --lh-normal: 1.5;
-  --lh-relaxed: 1.6;
+  --lh-relaxed: 1.65;
 
-  /* Spacing (4px base) */
   --space-0: 0;
   --space-1: 4px;
   --space-2: 8px;
@@ -97,30 +89,26 @@
   --space-12: 48px;
   --space-16: 64px;
 
-  /* Radii */
-  --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
+  --radius-xs: 5px;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
   --radius-full: 9999px;
 
-  /* Shadows */
-  --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
-  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
-  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.04);
+  --shadow-xs: 0 1px 2px rgba(25, 58, 99, .035);
+  --shadow-sm: 0 2px 7px rgba(25, 58, 99, .06), 0 1px 2px rgba(25, 58, 99, .035);
+  --shadow-md: 0 8px 20px rgba(25, 58, 99, .07), 0 2px 6px rgba(25, 58, 99, .04);
+  --shadow-lg: 0 16px 35px rgba(25, 58, 99, .10), 0 4px 10px rgba(25, 58, 99, .05);
+  --shadow-xl: 0 25px 60px rgba(25, 58, 99, .15);
 
-  /* Transitions */
-  --transition-fast: 150ms ease;
-  --transition-normal: 200ms ease;
-  --transition-slow: 300ms ease;
+  --transition-fast: 150ms cubic-bezier(.2,.7,.2,1);
+  --transition-normal: 220ms cubic-bezier(.2,.7,.2,1);
+  --transition-slow: 360ms cubic-bezier(.2,.7,.2,1);
 
-  /* Layout */
   --sidebar-width: 248px;
-  --sidebar-collapsed: 64px;
-  --topbar-height: 56px;
+  --sidebar-collapsed: 68px;
+  --topbar-height: 62px;
   --drawer-width: 620px;
-  --content-max-width: 1600px;
+  --content-max-width: 1680px;
 }

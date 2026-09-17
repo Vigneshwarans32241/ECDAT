@@ -1,55 +1,56 @@
-﻿import { useState } from 'react';
-import { Search, Bell, Download, Plus, ShieldCheck } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
-import './Topbar.css';
+﻿import { useState } from 'react'
+import { Search, Bell, Download, Plus, ShieldCheck, PanelLeft } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import './Topbar.css'
 
-export default function Topbar() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const navigate = useNavigate();
+export default function Topbar({ onToggleSidebar }) {
+  const [searchTerm, setSearchTerm] = useState('')
+  const [notificationsOpen, setNotificationsOpen] = useState(false)
+  const navigate = useNavigate()
 
-  const handleSearch = (e) => {
-    if (e.key === 'Enter' && searchTerm.trim()) {
-      navigate('/inventory');
+  const handleSearch = (event) => {
+    if (event.key === 'Enter' && searchTerm.trim()) {
+      navigate(`/inventory?search=${encodeURIComponent(searchTerm.trim())}`)
     }
-  };
+  }
 
   return (
     <header className="topbar">
       <div className="topbar-left">
+        <button className="topbar-collapse-btn" type="button" onClick={onToggleSidebar} aria-label="Toggle sidebar">
+          <PanelLeft size={17} />
+        </button>
         <div className="topbar-search">
-          <Search size={16} className="topbar-search-icon" />
+          <Search size={16} className="topbar-search-icon" aria-hidden="true" />
           <input
-            type="text"
-            placeholder="Global Search (RSA, ECDSA, apps, services...)"
+            type="search"
+            aria-label="Search assets, algorithms, applications"
+            placeholder="Search assets, algorithms, applications..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(event) => setSearchTerm(event.target.value)}
             onKeyDown={handleSearch}
             className="topbar-search-input"
           />
+          <kbd>⌘ K</kbd>
         </div>
       </div>
       <div className="topbar-right">
-        <div className="topbar-action" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <ShieldCheck size={16} color="#10b981" />
-          <span style={{ fontSize: '12px', fontWeight: 600 }}>Cluster: US-East-Primary</span>
+        <div className="topbar-cluster"><span className="cluster-dot" /><span>US-East-Primary</span></div>
+        <Link className="topbar-action" to="/reports"><Download size={15} /><span>Export CBOM</span></Link>
+        <div className="topbar-notifications">
+          <button className="topbar-icon-btn" type="button" aria-label="Notifications" aria-expanded={notificationsOpen} onClick={() => setNotificationsOpen((value) => !value)}>
+            <Bell size={17} /><span className="topbar-notification-dot" />
+          </button>
+          {notificationsOpen && (
+            <div className="notification-popover" role="status">
+              <strong>Attention needed</strong>
+              <p>8 critical findings are ready for review.</p>
+              <Link to="/risks" onClick={() => setNotificationsOpen(false)}>Open risk center →</Link>
+            </div>
+          )}
         </div>
-        <Link to="/reports">
-          <button className="topbar-action" type="button">
-            <Download size={15} />
-            <span>Export CBOM</span>
-          </button>
-        </Link>
-        <button className="topbar-icon-btn" type="button" aria-label="Notifications">
-          <Bell size={17} />
-          <span className="topbar-notification-dot"></span>
-        </button>
-        <Link to="/scans">
-          <button className="topbar-btn-primary" type="button">
-            <Plus size={15} />
-            <span>New Scan</span>
-          </button>
-        </Link>
+        <Link className="topbar-btn-primary" to="/scans"><Plus size={15} /><span>New scan</span></Link>
       </div>
     </header>
-  );
+  )
 }

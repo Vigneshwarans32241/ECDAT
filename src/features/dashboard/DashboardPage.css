@@ -1,0 +1,17 @@
+.dashboard-page .page-header { position: relative; margin-bottom: 2px; padding: 27px 30px 25px; overflow: hidden; border: 1px solid #d7e4f2; border-radius: 18px; background: linear-gradient(115deg, rgba(255,255,255,.98) 0%, rgba(246,250,255,.96) 58%, rgba(234,243,255,.96) 100%); box-shadow: 0 11px 28px rgba(25,58,99,.06); }
+.dashboard-page .page-header::before { content: ''; position: absolute; right: -45px; top: -100px; width: 280px; height: 280px; border: 1px solid rgba(37,99,235,.12); border-radius: 50%; box-shadow: 0 0 0 18px rgba(37,99,235,.025), 0 0 0 38px rgba(37,99,235,.018); }
+.dashboard-page .page-header::after { width: 55px; height: 4px; margin-top: 22px; background: linear-gradient(90deg, var(--accent-secondary), #55c8dc); }
+.dashboard-page .page-header-row { position: relative; z-index: 1; }
+.dashboard-page .page-header-title { font-size: clamp(1.8rem, 3vw, 2.55rem); letter-spacing: -.065em; }
+.dashboard-page .page-header-subtitle { max-width: 680px; color: #60758d; }
+.dashboard-page .page-header-actions { padding-top: 3px; }
+.dashboard-page .dashboard-kpi-grid { gap: 14px; margin-bottom: 0; }
+.dashboard-page .dashboard-chart-grid { gap: 14px; }
+.dashboard-page .card { box-shadow: 0 3px 10px rgba(25,58,99,.035); }
+.dashboard-page .card:hover { box-shadow: 0 12px 24px rgba(25,58,99,.075); }
+.dashboard-page .kpi-card { min-height: 154px; }
+.dashboard-page .kpi-card-value { font-size: clamp(2.25rem, 3.2vw, 2.9rem); }
+@media (max-width: 680px) {
+  .dashboard-page .page-header { padding: 22px 20px 21px; border-radius: 14px; }
+  .dashboard-page .page-header-title { font-size: 1.8rem; }
+}

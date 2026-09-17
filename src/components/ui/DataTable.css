@@ -1,40 +1,9 @@
-.data-table-container {
-  background: #ffffff;
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-}
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: var(--fs-sm);
-  text-align: left;
-}
-.data-table th {
-  background-color: #f9fafb;
-  color: var(--text-secondary);
-  font-weight: var(--fw-semibold);
-  font-size: var(--fs-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border-default);
-  white-space: nowrap;
-}
-.data-table td {
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--border-default);
-  color: var(--text-primary);
-  vertical-align: middle;
-}
-.data-table tr:last-child td {
-  border-bottom: none;
-}
-.data-table tr.clickable {
-  cursor: pointer;
-  transition: background-color 0.12s ease;
-}
-.data-table tr.clickable:hover {
-  background-color: #f8fafc;
-}
+.data-table-container { overflow: auto; background: rgba(255,255,255,.94); border: 1px solid var(--border-default); border-radius: var(--radius-lg); box-shadow: var(--shadow-xs); }
+.data-table { width: 100%; min-width: 680px; border-collapse: separate; border-spacing: 0; font-size: var(--fs-sm); text-align: left; }
+.data-table th { padding: 13px 16px; border-bottom: 1px solid var(--border-default); color: #70839a; background: linear-gradient(180deg,#fafdff,#f4f8fc); font-size: 10px; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+.data-table td { padding: 15px 16px; border-bottom: 1px solid var(--border-light); color: var(--text-primary); vertical-align: middle; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr.clickable { cursor: pointer; transition: background-color var(--transition-fast), box-shadow var(--transition-fast); }
+.data-table tr.clickable:hover { background: #f5f9ff; box-shadow: inset 3px 0 var(--accent-secondary); }
+.data-table tr.clickable:focus-within { background: #f5f9ff; box-shadow: inset 3px 0 var(--accent-secondary); }
+@media(max-width:680px){.data-table td{padding:13px 12px}.data-table th{padding-inline:12px}}

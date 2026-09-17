@@ -1,34 +1,10 @@
-.page-header { margin-bottom: var(--space-6); }
-.page-header-breadcrumb {
-  font-size: var(--fs-xs);
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-weight: var(--fw-semibold);
-  margin-bottom: var(--space-2);
-}
-.page-header-row { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); }
-.page-header-title {
-  font-size: var(--fs-2xl);
-  font-weight: var(--fw-bold);
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-.page-header-badge {
-  font-size: var(--fs-xs);
-  font-weight: var(--fw-semibold);
-  padding: 2px 10px;
-  border-radius: var(--radius-full);
-  background: var(--status-success-bg);
-  color: var(--status-success-text);
-}
-.page-header-subtitle {
-  font-size: var(--fs-base);
-  color: var(--text-secondary);
-  margin-top: var(--space-1);
-  max-width: 700px;
-  line-height: var(--lh-relaxed);
-}
-.page-header-actions { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
+.page-header { position: relative; margin-bottom: 30px; }
+.page-header::after { content: ''; display: block; width: 42px; height: 3px; margin-top: 20px; border-radius: 999px; background: linear-gradient(90deg, var(--accent-secondary), #63b3ed); }
+.page-header-breadcrumb { margin-bottom: 8px; color: var(--accent-secondary); font-size: 10px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+.page-header-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+.page-header-left { min-width: 0; }
+.page-header-title { display: flex; align-items: center; gap: 12px; color: var(--text-primary); font-family: var(--font-display); font-size: clamp(1.65rem, 2.6vw, 2.3rem); font-weight: 800; letter-spacing: -.055em; line-height: 1.06; }
+.page-header-badge { padding: 4px 10px; border: 1px solid #bbf7d0; border-radius: var(--radius-full); color: var(--status-success-text); background: var(--status-success-bg); font-size: 10px; font-weight: 800; letter-spacing: .04em; }
+.page-header-subtitle { max-width: 760px; margin-top: 10px; color: var(--text-secondary); font-size: var(--fs-md); line-height: 1.55; }
+.page-header-actions { display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-shrink: 0; }
+@media (max-width: 680px) { .page-header-row { flex-direction: column; gap: 16px; } .page-header-actions { justify-content: flex-start; width: 100%; flex-wrap: wrap; } }

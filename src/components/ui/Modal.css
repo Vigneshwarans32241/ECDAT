@@ -1,54 +1,7 @@
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(15, 23, 42, 0.5);
-  backdrop-filter: blur(2px);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  animation: fadeIn 0.15s ease-out;
-}
-.modal-box {
-  width: 100%;
-  max-width: 580px;
-  background-color: #ffffff;
-  border-radius: var(--radius-lg);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  animation: scaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.modal-header {
-  padding: 18px 24px;
-  border-bottom: 1px solid var(--border-default);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.modal-title {
-  margin: 0;
-  font-size: var(--fs-md);
-  font-weight: var(--fw-semibold);
-  color: var(--text-primary);
-}
-.modal-body {
-  padding: 24px;
-  overflow-y: auto;
-  max-height: 75vh;
-}
-.modal-footer {
-  padding: 14px 24px;
-  border-top: 1px solid var(--border-default);
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  background-color: #f9fafb;
-}
-
-@keyframes scaleIn {
-  from { transform: scale(0.95); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
+.modal-backdrop { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(18,35,56,.38); backdrop-filter: blur(7px); animation: fadeIn .15s ease-out; }
+.modal-box { display: flex; flex-direction: column; width: 100%; max-width: 580px; overflow: hidden; border: 1px solid rgba(255,255,255,.8); border-radius: 17px; background: #fff; box-shadow: 0 28px 70px rgba(20,38,68,.22); animation: scaleIn .2s cubic-bezier(.16,1,.3,1); }
+.modal-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid var(--border-light); background: linear-gradient(180deg,#fff,#fbfdff); }
+.modal-title { margin: 0; color: var(--text-primary); font-size: var(--fs-md); font-weight: 800; letter-spacing: -.02em; }
+.modal-body { max-height: 75vh; overflow-y: auto; padding: 24px; }
+.modal-footer { display: flex; justify-content: flex-end; gap: 12px; padding: 15px 24px; border-top: 1px solid var(--border-light); background: #f7faff; }
+@keyframes scaleIn { from { opacity: 0; transform: scale(.96) translateY(5px); } to { opacity: 1; transform: scale(1) translateY(0); } }

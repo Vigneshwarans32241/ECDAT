@@ -6,7 +6,7 @@ import Button from '../../components/ui/Button';
 import ProgressBar from '../../components/ui/ProgressBar';
 import Drawer from '../../components/ui/Drawer';
 import { useMigrationPlans } from '../../hooks/useMigrationPlans';
-import { ArrowRight, Layers } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 const COLUMNS = [
   { id: 'not_started', title: 'Not Started', color: '#94a3b8' },
@@ -103,26 +103,32 @@ export default function MigrationPage() {
                     <div style={{ marginTop: '10px', paddingTop: '8px', borderTop: '1px solid #f1f5f9', display: 'flex', justifyContent: 'flex-end', gap: '4px' }}>
                       {col.id !== 'not_started' && (
                         <button
+                          type="button"
+                          aria-label={`Move ${task.title} back one stage`}
+                          title="Move task back one stage"
                           onClick={(e) => {
                             e.stopPropagation();
                             const curIdx = COLUMNS.findIndex(c => c.id === col.id);
                             updateTaskStage(task.id, COLUMNS[curIdx - 1].id);
                           }}
-                          style={{ padding: '2px 6px', fontSize: '10px', borderRadius: '4px', border: '1px solid #cbd5e1', background: '#f8fafc', cursor: 'pointer' }}
+                          style={{ padding: '4px 7px', fontSize: '10px', borderRadius: '5px', border: '1px solid #cbd5e1', background: '#f8fafc', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                         >
-                          ?
+                          <ArrowLeft size={12} aria-hidden="true" /> Back
                         </button>
                       )}
                       {col.id !== 'completed' && (
                         <button
+                          type="button"
+                          aria-label={`Advance ${task.title} one stage`}
+                          title="Advance task one stage"
                           onClick={(e) => {
                             e.stopPropagation();
                             const curIdx = COLUMNS.findIndex(c => c.id === col.id);
                             updateTaskStage(task.id, COLUMNS[curIdx + 1].id);
                           }}
-                          style={{ padding: '2px 6px', fontSize: '10px', borderRadius: '4px', border: '1px solid #cbd5e1', background: '#f8fafc', cursor: 'pointer' }}
+                          style={{ padding: '4px 7px', fontSize: '10px', borderRadius: '5px', border: '1px solid #cbd5e1', background: '#f8fafc', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                         >
-                          Advance ?
+                          Advance <ArrowRight size={12} aria-hidden="true" />
                         </button>
                       )}
                     </div>

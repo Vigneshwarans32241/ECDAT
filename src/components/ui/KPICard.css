@@ -1,16 +1,9 @@
-.kpi-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-default);
-  border-top: 3px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  padding: var(--space-5);
-  box-shadow: var(--shadow-xs);
-  transition: all var(--transition-fast);
-}
-.kpi-card:hover { box-shadow: var(--shadow-sm); transform: translateY(-1px); }
-.kpi-card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); }
-.kpi-card-label { font-size: var(--fs-sm); font-weight: var(--fw-medium); color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.3px; }
-.kpi-card-icon { opacity: 0.7; }
-.kpi-card-value { font-size: var(--fs-metric); font-weight: var(--fw-bold); color: var(--text-primary); line-height: var(--lh-tight); }
-.kpi-card-detail { font-size: var(--fs-sm); color: var(--text-secondary); margin-top: var(--space-1); }
-.kpi-card-trend { font-size: var(--fs-xs); color: var(--status-info-text); margin-top: var(--space-1); }
+.kpi-card { position: relative; overflow: hidden; padding: 21px; background: rgba(255,255,255,.96); border: 1px solid var(--border-default); border-top: 3px solid var(--border-default); border-radius: var(--radius-lg); box-shadow: var(--shadow-xs); transition: all var(--transition-fast); }
+.kpi-card::after { content: ''; position: absolute; right: -30px; bottom: -36px; width: 116px; height: 116px; border: 1px solid currentColor; border-radius: 50%; opacity: .07; }
+.kpi-card:hover { border-color: #bfd0e7; box-shadow: var(--shadow-md); transform: translateY(-3px); }
+.kpi-card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 19px; }
+.kpi-card-label { color: var(--text-secondary); font-size: 10px; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
+.kpi-card-icon { opacity: .82; }
+.kpi-card-value { color: var(--text-primary); font-family: var(--font-display); font-size: clamp(1.9rem, 3vw, 2.55rem); font-weight: 850; letter-spacing: -.065em; line-height: 1; }
+.kpi-card-detail { margin-top: 9px; color: var(--text-secondary); font-size: var(--fs-sm); line-height: 1.4; }
+.kpi-card-trend { margin-top: 8px; color: var(--status-info-text); font-size: var(--fs-xs); font-weight: 700; }

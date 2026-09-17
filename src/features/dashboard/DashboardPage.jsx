@@ -13,6 +13,7 @@ import AssetDetailDrawer from '../inventory/AssetDetailDrawer';
 import Button from '../../components/ui/Button';
 import { Download, Play } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import './DashboardPage.css';
 
 export default function DashboardPage() {
   const { data: dashboardData } = useDashboard();
@@ -26,7 +27,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+    <div className="dashboard-page" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       <PageHeader
         title="Enterprise Cryptographic Posture"
         subtitle="Global discovery, quantum exposure assessment, and PQC transition metrics across enterprise systems"
@@ -50,7 +51,7 @@ export default function DashboardPage() {
       <KPIGrid kpis={dashboardData?.kpis} />
 
       {/* Charts Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '20px' }}>
+      <div className="dashboard-chart-grid">
         <RiskDistributionChart distribution={dashboardData?.riskDistribution} />
         <AlgorithmDistributionChart algorithms={dashboardData?.algorithmDistribution} />
       </div>

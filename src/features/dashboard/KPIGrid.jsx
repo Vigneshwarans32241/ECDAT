@@ -5,7 +5,7 @@ export default function KPIGrid({ kpis }) {
   if (!kpis) return null;
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '24px' }}>
+    <div className="dashboard-kpi-grid">
       <KPICard
         label="Total Cryptographic Assets"
         value={kpis.totalAssets?.toLocaleString()}

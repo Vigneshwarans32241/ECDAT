@@ -44,15 +44,35 @@ func setupPQCHandshake(conn *tls.Conn) {
 export default function DemoScannerPage() {
   const [code, setCode] = useState(SAMPLES.go_rsa);
   const [findings, setFindings] = useState(() => scanText(SAMPLES.go_rsa));
+  const [isScanning, setIsScanning] = useState(false);
+  const [scanProgress, setScanProgress] = useState(0);
+  const [scanMessage, setScanMessage] = useState('Ready to scan current source');
+  const [lastScanAt, setLastScanAt] = useState(() => new Date());
 
   const handleScan = () => {
-    const res = scanText(code);
-    setFindings(res);
+    if (isScanning) return;
+    setIsScanning(true);
+    setScanProgress(18);
+    setScanMessage('Loading detection rules...');
+    const progressTimer = window.setInterval(() => {
+      setScanProgress((value) => Math.min(value + 18, 84));
+      setScanMessage((value) => value === 'Loading detection rules...' ? 'Matching cryptographic signatures...' : 'Evaluating findings...');
+    }, 110);
+    window.setTimeout(() => {
+      window.clearInterval(progressTimer);
+      setFindings(scanText(code));
+      setLastScanAt(new Date());
+      setScanProgress(100);
+      setScanMessage('Scan complete — findings refreshed');
+      setIsScanning(false);
+    }, 620);
   };
 
   const handleLoadSample = (sampleKey) => {
     setCode(SAMPLES[sampleKey]);
     setFindings(scanText(SAMPLES[sampleKey]));
+    setLastScanAt(new Date());
+    setScanMessage('Sample loaded — run a scan to re-check the source');
   };
 
   return (
@@ -61,8 +81,8 @@ export default function DemoScannerPage() {
         title="Live Interactive Cryptographic Pattern Scanner"
         subtitle="Test browser-side regex rules detecting RSA, ECDSA, AES, and PQC schemes directly from raw code"
         actions={
-          <Button variant="primary" icon={Play} onClick={handleScan}>
-            Run Pattern Scan
+          <Button variant="primary" icon={Play} onClick={handleScan} disabled={isScanning} aria-busy={isScanning}>
+            {isScanning ? 'Scanning...' : 'Run Pattern Scan'}
           </Button>
         }
       />
@@ -72,16 +92,16 @@ export default function DemoScannerPage() {
         <span style={{ fontSize: '12px', fontWeight: 600, color: '#475569', display: 'flex', alignItems: 'center', gap: '6px' }}>
           <Sparkles size={16} color="#1e40af" /> Load Sample Code:
         </span>
-        <Button variant="outline" size="sm" onClick={() => handleLoadSample('go_rsa')}>
+          <Button variant="outline" size="sm" disabled={isScanning} onClick={() => handleLoadSample('go_rsa')}>
           Go (RSA-2048 PSS)
         </Button>
-        <Button variant="outline" size="sm" onClick={() => handleLoadSample('python_jwt')}>
+          <Button variant="outline" size="sm" disabled={isScanning} onClick={() => handleLoadSample('python_jwt')}>
           Python (ECDSA ES256)
         </Button>
-        <Button variant="outline" size="sm" onClick={() => handleLoadSample('java_aes')}>
+          <Button variant="outline" size="sm" disabled={isScanning} onClick={() => handleLoadSample('java_aes')}>
           Java (AES-GCM)
         </Button>
-        <Button variant="outline" size="sm" onClick={() => handleLoadSample('pqc_hybrid')}>
+          <Button variant="outline" size="sm" disabled={isScanning} onClick={() => handleLoadSample('pqc_hybrid')}>
           PQC (X25519MLKEM768)
         </Button>
       </div>
@@ -94,7 +114,6 @@ export default function DemoScannerPage() {
             value={code}
             onChange={(e) => {
               setCode(e.target.value);
-              setFindings(scanText(e.target.value));
             }}
             rows={14}
             style={{
@@ -114,7 +133,11 @@ export default function DemoScannerPage() {
         </Card>
 
         {/* Findings Box */}
-        <Card title={`Discovered Cryptographic Signatures (${findings.length})`} subtitle="Real-time detector output">
+          <Card title={`Discovered Cryptographic Signatures (${findings.length})`} subtitle={`Last scan: ${lastScanAt.toLocaleTimeString()}`}>
+          <div className={`scanner-status ${isScanning ? 'is-active' : ''}`} role="status" aria-live="polite">
+            <div className="scanner-status-row"><span className="scanner-status-dot" />{scanMessage}<strong>{scanProgress}%</strong></div>
+            <div className="scanner-progress-track"><span style={{ width: `${scanProgress}%` }} /></div>
+          </div>
           {findings.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '40px 20px', color: '#94a3b8' }}>
               No cryptographic signatures matched current detection rules.
