@@ -1,0 +1,24 @@
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+}
+.empty-state-icon {
+  margin-bottom: 16px;
+  color: var(--text-muted);
+}
+.empty-state-title {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--text-primary);
+  margin: 0 0 6px 0;
+}
+.empty-state-desc {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  max-width: 420px;
+  margin: 0 0 16px 0;
+}
