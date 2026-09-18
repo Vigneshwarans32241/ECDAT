@@ -1,20 +1,21 @@
-﻿import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import PageHeader from '../../components/layout/PageHeader';
 import InventoryToolbar from './InventoryToolbar';
 import InventoryKPIs from './InventoryKPIs';
-import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
 import AssetDetailDrawer from './AssetDetailDrawer';
 import { useCryptoAssets } from '../../hooks/useCryptoAssets';
 import { useMigrationPlans } from '../../hooks/useMigrationPlans';
 import { useToast } from '../../components/ui/Toast';
-import { Eye, ArrowUpDown, ArrowUp, ArrowDown, Layers, Download, ChevronLeft, ChevronRight } from 'lucide-react';
+import { DataTable, DataTableViewOptions } from '../../components/ui/data-table';
+import { getCbomColumns } from './cbom-columns';
+import { Download, Layers, Sparkles } from 'lucide-react';
 
 export default function InventoryPage() {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Controlled values using searchParams as primary source of truth
+  // URL search params as source of truth for high-level filters
   const search = searchParams.get('search') || '';
   const riskFilter = searchParams.get('risk') || 'all';
   const quantumFilter = searchParams.get('quantum') || 'all';
@@ -29,27 +30,15 @@ export default function InventoryPage() {
       next.set(key, val);
     }
     setSearchParams(next);
-    setCurrentPage(1);
   };
 
-  // Sorting
-  const [sortField, setSortField] = useState('id');
-  const [sortDirection, setSortDirection] = useState('asc');
-
-  // Selection
-  const [selectedIds, setSelectedIds] = useState(new Set());
-
-  // Pagination
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(25);
-
+  const [selectedAssets, setSelectedAssets] = useState([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const toast = useToast();
   const { addTask } = useMigrationPlans();
-
   const { rawAssets, selectedAsset, setSelectedAssetId } = useCryptoAssets();
 
-  // Filtered Assets
+  // Filtered Assets based on toolbar controls
   const filteredAssets = useMemo(() => {
     return rawAssets.filter((item) => {
       if (search) {
@@ -74,97 +63,84 @@ export default function InventoryPage() {
     });
   }, [rawAssets, search, riskFilter, quantumFilter, appFilter, purposeFilter]);
 
-  // Sorted Assets
-  const sortedAssets = useMemo(() => {
-    return [...filteredAssets].sort((a, b) => {
-      let aVal = a[sortField];
-      let bVal = b[sortField];
-
-      if (sortField === 'algorithm') {
-        aVal = a.algorithm?.name || '';
-        bVal = b.algorithm?.name || '';
-      } else if (sortField === 'application') {
-        aVal = a.context?.applicationName || '';
-        bVal = b.context?.applicationName || '';
-      } else if (sortField === 'purpose') {
-        aVal = a.usage?.purpose || '';
-        bVal = b.usage?.purpose || '';
-      } else if (sortField === 'quantum') {
-        aVal = a.status?.quantum || '';
-        bVal = b.status?.quantum || '';
-      }
-
-      if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
-      if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
-      return 0;
-    });
-  }, [filteredAssets, sortField, sortDirection]);
-
-  // Paginated Assets
-  const totalPages = pageSize === 'all' ? 1 : Math.ceil(sortedAssets.length / pageSize) || 1;
-  const paginatedAssets = useMemo(() => {
-    if (pageSize === 'all') return sortedAssets;
-    const start = (currentPage - 1) * pageSize;
-    return sortedAssets.slice(start, start + pageSize);
-  }, [sortedAssets, currentPage, pageSize]);
-
-  const handleSort = (field) => {
-    if (sortField === field) {
-      setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'));
-    } else {
-      setSortField(field);
-      setSortDirection('asc');
-    }
-  };
-
-  const handleRowClick = (asset) => {
+  const handleInspect = useCallback((asset) => {
     setSelectedAssetId(asset.id);
     setDrawerOpen(true);
-  };
+  }, [setSelectedAssetId]);
 
-  const handleToggleSelectAll = () => {
-    if (selectedIds.size === paginatedAssets.length) {
-      setSelectedIds(new Set());
-    } else {
-      setSelectedIds(new Set(paginatedAssets.map((a) => a.id)));
-    }
-  };
-
-  const handleToggleRow = (id, e) => {
-    e.stopPropagation();
-    setSelectedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
+  const handleMigrate = useCallback((asset) => {
+    addTask({
+      title: `Migrate ${asset.context?.applicationName || 'App'} (${asset.algorithm?.name || 'Algo'})`,
+      assetId: asset.id,
+      applicationName: asset.context?.applicationName || 'Target App',
+      stage: 'not_started',
+      priority: asset.riskBand === 'critical' ? 'critical' : 'high',
+      targetAlgorithm: 'ML-DSA-65 / ML-KEM-768'
     });
-  };
+    toast.success(`Enrolled ${asset.id} into PQC Migration Runway`);
+  }, [addTask, toast]);
+
+  const handleCopyId = useCallback((id) => {
+    navigator.clipboard.writeText(id);
+    toast.info(`Copied Asset ID ${id} to clipboard`);
+  }, [toast]);
+
+  const handleExportSnippet = useCallback((asset) => {
+    const snippet = {
+      bomFormat: 'CycloneDX',
+      specVersion: '1.6',
+      component: {
+        type: 'cryptographic-asset',
+        name: asset.id,
+        algorithm: asset.algorithm,
+        usage: asset.usage,
+        context: asset.context,
+        status: asset.status,
+        riskBand: asset.riskBand
+      }
+    };
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(snippet, null, 2));
+    const dl = document.createElement('a');
+    dl.setAttribute('href', dataStr);
+    dl.setAttribute('download', `${asset.id}_cyclonedx_snippet.json`);
+    document.body.appendChild(dl);
+    dl.click();
+    document.body.removeChild(dl);
+    toast.success(`Exported CycloneDX 1.6 snippet for ${asset.id}`);
+  }, [toast]);
+
+  // TanStack Column Definitions
+  const columns = useMemo(() => {
+    return getCbomColumns({
+      onInspect: handleInspect,
+      onMigrate: handleMigrate,
+      onCopyId: handleCopyId,
+      onExportSnippet: handleExportSnippet
+    });
+  }, [handleInspect, handleMigrate, handleCopyId, handleExportSnippet]);
+
+  const handleSelectionChange = useCallback((rows) => {
+    setSelectedAssets(rows);
+  }, []);
 
   const handleBatchMigrate = () => {
     let count = 0;
-    selectedIds.forEach((id) => {
-      const asset = rawAssets.find((a) => a.id === id);
-      if (asset) {
-        addTask({
-          title: `Migrate ${asset.context?.applicationName} (${asset.algorithm?.name})`,
-          assetId: asset.id,
-          applicationName: asset.context?.applicationName || 'Target App',
-          stage: 'not_started',
-          priority: asset.riskBand === 'critical' ? 'critical' : 'high',
-          targetAlgorithm: 'ML-DSA-65 / ML-KEM-768'
-        });
-        count++;
-      }
+    selectedAssets.forEach((asset) => {
+      addTask({
+        title: `Migrate ${asset.context?.applicationName || 'App'} (${asset.algorithm?.name || 'Algo'})`,
+        assetId: asset.id,
+        applicationName: asset.context?.applicationName || 'Target App',
+        stage: 'not_started',
+        priority: asset.riskBand === 'critical' ? 'critical' : 'high',
+        targetAlgorithm: 'ML-DSA-65 / ML-KEM-768'
+      });
+      count++;
     });
     toast.success(`Enrolled ${count} assets into PQC Migration Runway`);
-    setSelectedIds(new Set());
   };
 
   const handleExportCSV = (onlySelected = false) => {
-    const listToExport = onlySelected
-      ? rawAssets.filter((a) => selectedIds.has(a.id))
-      : filteredAssets;
-
+    const listToExport = onlySelected ? selectedAssets : filteredAssets;
     const headers = ['Asset ID', 'Algorithm', 'Key Length', 'Purpose', 'Application', 'Service', 'Risk Band', 'Quantum Status', 'Migration'];
     const rows = listToExport.map((a) => [
       a.id,
@@ -213,20 +189,14 @@ export default function InventoryPage() {
 
   const handleResetFilters = () => {
     setSearchParams({});
-    setCurrentPage(1);
     toast.info('All inventory filters cleared');
-  };
-
-  const getSortIcon = (field) => {
-    if (sortField !== field) return <ArrowUpDown size={13} style={{ opacity: 0.4 }} />;
-    return sortDirection === 'asc' ? <ArrowUp size={13} /> : <ArrowDown size={13} />;
   };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       <PageHeader
         title="Cryptographic Inventory (CBOM)"
-        subtitle="Cryptographic Bill of Materials indexing all algorithms, certificates, and keys across workloads"
+        subtitle="Cryptographic Bill of Materials indexing algorithms, keys, certificates, and libraries using TanStack Table v9"
         actions={
           <div style={{ display: 'flex', gap: '8px' }}>
             <Button variant="outline" size="sm" icon={Download} onClick={() => handleExportCSV(false)}>
@@ -261,199 +231,54 @@ export default function InventoryPage() {
         onExportCSV={() => handleExportCSV(false)}
       />
 
-      {/* Batch Action Bar */}
-      {selectedIds.size > 0 && (
+      {/* Floating Batch Action Bar */}
+      {selectedAssets.length > 0 && (
         <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '10px 16px',
+          padding: '12px 18px',
           background: '#eff6ff',
           border: '1px solid #bfdbfe',
           borderRadius: '8px',
           fontSize: '13px',
-          color: '#1e40af'
+          color: '#1e40af',
+          boxShadow: '0 2px 4px rgba(37, 99, 235, 0.08)'
         }}>
-          <span style={{ fontWeight: 600 }}>
-            {selectedIds.size} cryptographic asset{selectedIds.size > 1 ? 's' : ''} selected
+          <span style={{ fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Sparkles size={16} />
+            {selectedAssets.length} cryptographic asset{selectedAssets.length > 1 ? 's' : ''} selected
           </span>
           <div style={{ display: 'flex', gap: '8px' }}>
             <Button variant="primary" size="sm" icon={Layers} onClick={handleBatchMigrate}>
               Batch Migrate Selected
             </Button>
             <Button variant="outline" size="sm" icon={Download} onClick={() => handleExportCSV(true)}>
-              Export Selected
-            </Button>
-            <Button variant="secondary" size="sm" onClick={() => setSelectedIds(new Set())}>
-              Deselect All
+              Export Selected ({selectedAssets.length})
             </Button>
           </div>
         </div>
       )}
 
-      {/* Interactive Table */}
-      <div className="data-table-container">
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th style={{ width: '40px', textAlign: 'center' }}>
-                <input
-                  type="checkbox"
-                  checked={paginatedAssets.length > 0 && selectedIds.size === paginatedAssets.length}
-                  onChange={handleToggleSelectAll}
-                  aria-label="Select all rows"
-                />
-              </th>
-              <th onClick={() => handleSort('id')} style={{ cursor: 'pointer' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span>Asset ID</span> {getSortIcon('id')}
-                </div>
-              </th>
-              <th onClick={() => handleSort('algorithm')} style={{ cursor: 'pointer' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span>Algorithm</span> {getSortIcon('algorithm')}
-                </div>
-              </th>
-              <th onClick={() => handleSort('purpose')} style={{ cursor: 'pointer' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span>Purpose</span> {getSortIcon('purpose')}
-                </div>
-              </th>
-              <th onClick={() => handleSort('application')} style={{ cursor: 'pointer' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span>Application & Service</span> {getSortIcon('application')}
-                </div>
-              </th>
-              <th onClick={() => handleSort('quantum')} style={{ cursor: 'pointer' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span>Quantum Status</span> {getSortIcon('quantum')}
-                </div>
-              </th>
-              <th onClick={() => handleSort('riskBand')} style={{ cursor: 'pointer' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span>Risk Band</span> {getSortIcon('riskBand')}
-                </div>
-              </th>
-              <th style={{ textAlign: 'right' }}>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedAssets.length === 0 ? (
-              <tr>
-                <td colSpan={8} style={{ textAlign: 'center', padding: '36px', color: '#94a3b8' }}>
-                  No cryptographic assets matched your search and filter criteria.
-                </td>
-              </tr>
-            ) : (
-              paginatedAssets.map((row) => (
-                <tr
-                  key={row.id}
-                  className="clickable"
-                  onClick={() => handleRowClick(row)}
-                  style={selectedIds.has(row.id) ? { background: '#f8fafc' } : undefined}
-                >
-                  <td style={{ textAlign: 'center' }} onClick={(e) => e.stopPropagation()}>
-                    <input
-                      type="checkbox"
-                      checked={selectedIds.has(row.id)}
-                      onChange={(e) => handleToggleRow(row.id, e)}
-                      aria-label={`Select ${row.id}`}
-                    />
-                  </td>
-                  <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: '#1e40af' }}>
-                    {row.id}
-                  </td>
-                  <td>
-                    <div style={{ fontWeight: 600, color: '#0f172a' }}>{row.algorithm?.name}</div>
-                    <div style={{ fontSize: '11px', color: '#64748b' }}>
-                      {row.algorithm?.family} {row.algorithm?.keySize ? `(${row.algorithm.keySize} bit)` : ''}
-                    </div>
-                  </td>
-                  <td style={{ textTransform: 'capitalize', color: '#334155' }}>
-                    {row.usage?.purpose?.replace(/_/g, ' ')}
-                  </td>
-                  <td>
-                    <div style={{ fontWeight: 500, color: '#0f172a' }}>{row.context?.applicationName}</div>
-                    <div style={{ fontSize: '11px', color: '#64748b' }}>{row.context?.serviceName || 'default'}</div>
-                  </td>
-                  <td>
-                    <Badge
-                      variant={
-                        row.status?.quantum === 'vulnerable' ? 'high' :
-                        row.status?.quantum === 'pqc_native' ? 'pqc' : 'low'
-                      }
-                    >
-                      {row.status?.quantum?.replace('_', ' ')}
-                    </Badge>
-                  </td>
-                  <td>
-                    <Badge variant={row.riskBand}>{row.riskBand}</Badge>
-                  </td>
-                  <td style={{ textAlign: 'right' }}>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      icon={Eye}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleRowClick(row);
-                      }}
-                    >
-                      Inspect
-                    </Button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Pagination Controls */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '13px', color: '#64748b', flexWrap: 'wrap', gap: '12px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span>Showing {paginatedAssets.length} of {filteredAssets.length} assets</span>
-          <span>•</span>
-          <span>Rows per page:</span>
-          <select
-            value={pageSize}
-            onChange={(e) => {
-              setPageSize(e.target.value === 'all' ? 'all' : Number(e.target.value));
-              setCurrentPage(1);
-            }}
-            style={{ padding: '4px 8px', borderRadius: '4px', border: '1px solid #d1d5db', fontSize: '12px' }}
-          >
-            <option value={10}>10</option>
-            <option value={25}>25</option>
-            <option value={50}>50</option>
-            <option value="all">All</option>
-          </select>
-        </div>
-
-        {pageSize !== 'all' && totalPages > 1 && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Button
-              variant="outline"
-              size="sm"
-              icon={ChevronLeft}
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-            >
-              Previous
-            </Button>
-            <span>Page {currentPage} of {totalPages}</span>
-            <Button
-              variant="outline"
-              size="sm"
-              icon={ChevronRight}
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-            >
-              Next
-            </Button>
+      {/* TanStack Table v9 shadcn Data Table */}
+      <DataTable
+        columns={columns}
+        data={filteredAssets}
+        onRowClick={handleInspect}
+        onSelectionChange={handleSelectionChange}
+        initialPageSize={25}
+        emptyMessage="No cryptographic assets match the current filter criteria."
+        toolbar={({ table }) => (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 4px' }}>
+            <div style={{ fontSize: '12px', color: '#64748b', fontWeight: 500 }}>
+              Showing {table.getFilteredRowModel().rows.length} indexed components
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <DataTableViewOptions table={table} />
+            </div>
           </div>
         )}
-      </div>
+      />
 
       {/* Detail Drawer */}
       <AssetDetailDrawer
