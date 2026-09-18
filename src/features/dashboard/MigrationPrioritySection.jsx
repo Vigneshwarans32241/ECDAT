@@ -1,11 +1,12 @@
-import { Link } from 'react-router-dom';
+﻿import { Link, useNavigate } from 'react-router-dom';
 import Card from '../../components/ui/Card';
 import ProgressBar from '../../components/ui/ProgressBar';
 import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
-import { ArrowRight, CheckCircle2, Clock } from 'lucide-react';
+import { ArrowRight, ExternalLink } from 'lucide-react';
 
-export default function MigrationPrioritySection({ tasks }) {
+export default function MigrationPrioritySection({ tasks, onSelectTask }) {
+  const navigate = useNavigate();
   const activeTasks = tasks?.slice(0, 3) || [];
 
   return (
@@ -21,18 +22,53 @@ export default function MigrationPrioritySection({ tasks }) {
       }
     >
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
-        {activeTasks.map(task => (
-          <div key={task.id} style={{ border: '1px solid #e2e8f0', borderRadius: '8px', padding: '16px', background: '#ffffff', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        {activeTasks.map((task) => (
+          <div
+            key={task.id}
+            onClick={() => {
+              if (onSelectTask) {
+                onSelectTask(task);
+              } else {
+                navigate('/migration');
+              }
+            }}
+            style={{
+              border: '1px solid #e2e8f0',
+              borderRadius: '8px',
+              padding: '16px',
+              background: '#ffffff',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = '#93c5fd';
+              e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = '#e2e8f0';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+            title="Click to inspect migration task"
+          >
             <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
               <div>
-                <span style={{ fontSize: '11px', color: '#64748b', fontWeight: 600, textTransform: 'uppercase' }}>{task.applicationName}</span>
-                <h4 style={{ fontSize: '14px', fontWeight: 600, color: '#0f172a', margin: '2px 0 0 0' }}>{task.title}</h4>
+                <span style={{ fontSize: '11px', color: '#64748b', fontWeight: 600, textTransform: 'uppercase' }}>
+                  {task.applicationName}
+                </span>
+                <h4 style={{ fontSize: '14px', fontWeight: 600, color: '#0f172a', margin: '2px 0 0 0' }}>
+                  {task.title}
+                </h4>
               </div>
               <Badge variant={task.priority === 'critical' ? 'critical' : 'high'}>{task.priority}</Badge>
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '12px', color: '#475569' }}>
-              <span>Target: <strong style={{ color: '#0284c7' }}>{task.targetAlgorithm}</strong></span>
+              <span>
+                Target: <strong style={{ color: '#0284c7' }}>{task.targetAlgorithm}</strong>
+              </span>
               <span>Due: {task.dueDate}</span>
             </div>
 
@@ -46,7 +82,9 @@ export default function MigrationPrioritySection({ tasks }) {
 
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '11px', color: '#64748b', borderTop: '1px solid #f1f5f9', paddingTop: '8px' }}>
               <span>Owner: {task.owner}</span>
-              <span style={{ textTransform: 'capitalize' }}>Stage: {task.stage?.replace('_', ' ')}</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#1e40af', fontWeight: 600 }}>
+                Inspect <ExternalLink size={12} />
+              </span>
             </div>
           </div>
         ))}

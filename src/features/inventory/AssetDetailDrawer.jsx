@@ -1,22 +1,55 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import Drawer from '../../components/ui/Drawer';
 import Tabs from '../../components/ui/Tabs';
 import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
 import ProgressBar from '../../components/ui/ProgressBar';
+import { useToast } from '../../components/ui/Toast';
+import { useMigrationPlans } from '../../hooks/useMigrationPlans';
 import { mockEvidence } from '../../mock/evidence';
 import { mockRecommendations } from '../../mock/recommendations';
 import { mockRiskAssessments } from '../../mock/risk-assessments';
-import { ShieldAlert, FileCode2, Network, AlertTriangle, Lightbulb, History } from 'lucide-react';
+import { ShieldAlert, FileCode2, Network, AlertTriangle, Lightbulb, History, Copy, CheckCircle2, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function AssetDetailDrawer({ isOpen, onClose, asset }) {
   const [activeTab, setActiveTab] = useState('overview');
+  const [copied, setCopied] = useState(false);
+  const toast = useToast();
+  const navigate = useNavigate();
+  const { addTask } = useMigrationPlans();
 
   if (!asset) return null;
 
-  const evidence = mockEvidence.find(e => e.assetId === asset.id) || mockEvidence[0];
-  const riskAssessment = mockRiskAssessments.find(r => r.assetId === asset.id) || mockRiskAssessments[0];
-  const recommendation = mockRecommendations.find(r => r.assetId === asset.id) || mockRecommendations[0];
+  const evidence = mockEvidence.find((e) => e.assetId === asset.id) || mockEvidence[0];
+  const riskAssessment = mockRiskAssessments.find((r) => r.assetId === asset.id) || mockRiskAssessments[0];
+  const recommendation = mockRecommendations.find((r) => r.assetId === asset.id) || mockRecommendations[0];
+
+  const handleCopyCode = () => {
+    if (evidence?.codeSnippet) {
+      navigator.clipboard.writeText(evidence.codeSnippet);
+      setCopied(true);
+      toast.success('Source code snippet copied to clipboard');
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const handleCreateMigrationTask = () => {
+    addTask({
+      title: `Migrate ${asset.context?.applicationName} (${asset.algorithm?.name}) to PQC`,
+      assetId: asset.id,
+      applicationId: asset.context?.applicationId || 'APP-001',
+      applicationName: asset.context?.applicationName || 'Target App',
+      stage: 'not_started',
+      priority: asset.riskBand === 'critical' ? 'critical' : 'high',
+      currentAlgorithm: asset.algorithm?.name || 'RSA-2048',
+      targetAlgorithm: recommendation.recommendedAlgorithm || 'ML-DSA-65',
+      owner: 'Alex Chen (SecOps)'
+    });
+    toast.success(`Created PQC migration runway task for ${asset.id}`);
+    onClose();
+    navigate('/migration');
+  };
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: ShieldAlert },
@@ -42,9 +75,16 @@ export default function AssetDetailDrawer({ isOpen, onClose, asset }) {
               {asset.status?.quantum?.replace('_', ' ')}
             </Badge>
           </div>
-          <Button variant="secondary" size="sm" onClick={onClose}>
-            Close
-          </Button>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            {asset.status?.quantum === 'vulnerable' && (
+              <Button variant="primary" size="sm" icon={ArrowRight} onClick={handleCreateMigrationTask}>
+                Plan PQC Migration
+              </Button>
+            )}
+            <Button variant="secondary" size="sm" onClick={onClose}>
+              Close
+            </Button>
+          </div>
         </div>
       }
     >
@@ -52,41 +92,53 @@ export default function AssetDetailDrawer({ isOpen, onClose, asset }) {
         {/* TAB 1: OVERVIEW */}
         {activeTab === 'overview' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            {/* Identity Banner */}
             <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '8px', border: '1px solid #e2e8f0', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
               <div>
                 <span style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>Algorithm Family</span>
-                <div style={{ fontSize: '14px', fontWeight: 600, color: '#0f172a' }}>{asset.algorithm?.family} ({asset.algorithm?.variant || 'Standard'})</div>
+                <div style={{ fontSize: '14px', fontWeight: 600, color: '#0f172a' }}>
+                  {asset.algorithm?.family} ({asset.algorithm?.variant || 'Standard'})
+                </div>
               </div>
               <div>
                 <span style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>Key Length / Curve</span>
-                <div style={{ fontSize: '14px', fontWeight: 600, color: '#0f172a' }}>{asset.algorithm?.keySize ? `${asset.algorithm.keySize} bits` : 'N/A'}</div>
+                <div style={{ fontSize: '14px', fontWeight: 600, color: '#0f172a' }}>
+                  {asset.algorithm?.keySize ? `${asset.algorithm.keySize} bits` : 'N/A'}
+                </div>
               </div>
               <div>
                 <span style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>Cryptographic Purpose</span>
-                <div style={{ fontSize: '14px', fontWeight: 600, color: '#0f172a' }}>{asset.usage?.purpose?.replace(/_/g, ' ')}</div>
+                <div style={{ fontSize: '14px', fontWeight: 600, color: '#0f172a' }}>
+                  {asset.usage?.purpose?.replace(/_/g, ' ')}
+                </div>
               </div>
               <div>
                 <span style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>Detection Confidence</span>
-                <div style={{ fontSize: '14px', fontWeight: 600, color: '#10b981' }}>{((asset.confidence || 0.99) * 100).toFixed(1)}% (AST Verified)</div>
+                <div style={{ fontSize: '14px', fontWeight: 600, color: '#10b981' }}>
+                  {((asset.confidence || 0.99) * 100).toFixed(1)}% (AST Verified)
+                </div>
               </div>
             </div>
 
-            {/* Context Details */}
             <div>
               <h4 style={{ fontSize: '14px', fontWeight: 600, color: '#0f172a', marginBottom: '10px' }}>Operational Context</h4>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
                 <div style={{ padding: '10px 12px', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '6px' }}>
                   <div style={{ fontSize: '11px', color: '#64748b' }}>Target Application</div>
-                  <div style={{ fontSize: '13px', fontWeight: 500, color: '#0f172a' }}>{asset.context?.applicationName} ({asset.context?.applicationId})</div>
+                  <div style={{ fontSize: '13px', fontWeight: 500, color: '#0f172a' }}>
+                    {asset.context?.applicationName} ({asset.context?.applicationId})
+                  </div>
                 </div>
                 <div style={{ padding: '10px 12px', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '6px' }}>
                   <div style={{ fontSize: '11px', color: '#64748b' }}>Workload / Container</div>
-                  <div style={{ fontSize: '13px', fontWeight: 500, color: '#0f172a' }}>{asset.context?.serviceName || 'default-service'}</div>
+                  <div style={{ fontSize: '13px', fontWeight: 500, color: '#0f172a' }}>
+                    {asset.context?.serviceName || 'default-service'}
+                  </div>
                 </div>
                 <div style={{ padding: '10px 12px', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '6px' }}>
                   <div style={{ fontSize: '11px', color: '#64748b' }}>Underlying Library</div>
-                  <div style={{ fontSize: '13px', fontWeight: 500, color: '#0f172a' }}>{asset.context?.libraryName || 'System Crypto'}</div>
+                  <div style={{ fontSize: '13px', fontWeight: 500, color: '#0f172a' }}>
+                    {asset.context?.libraryName || 'System Crypto'}
+                  </div>
                 </div>
                 <div style={{ padding: '10px 12px', background: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '6px' }}>
                   <div style={{ fontSize: '11px', color: '#64748b' }}>Internet Facing</div>
@@ -97,7 +149,6 @@ export default function AssetDetailDrawer({ isOpen, onClose, asset }) {
               </div>
             </div>
 
-            {/* Data Classification */}
             <div>
               <h4 style={{ fontSize: '14px', fontWeight: 600, color: '#0f172a', marginBottom: '10px' }}>Data Sensitivity & Exposure</h4>
               <p style={{ fontSize: '13px', color: '#475569', lineHeight: 1.5, margin: 0 }}>
@@ -126,11 +177,12 @@ export default function AssetDetailDrawer({ isOpen, onClose, asset }) {
               </div>
             </div>
 
-            {/* Code Snippet Box */}
             <div>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                 <span style={{ fontSize: '12px', fontWeight: 600, color: '#475569' }}>Source Code Snippet</span>
-                <span style={{ fontSize: '11px', color: '#10b981', fontWeight: 500 }}>Confidence: {((evidence.confidence || 0.99) * 100).toFixed(1)}%</span>
+                <Button variant="secondary" size="sm" icon={copied ? CheckCircle2 : Copy} onClick={handleCopyCode}>
+                  {copied ? 'Copied!' : 'Copy Code'}
+                </Button>
               </div>
               <pre style={{
                 background: '#0f172a',
@@ -244,6 +296,12 @@ export default function AssetDetailDrawer({ isOpen, onClose, asset }) {
                 ))}
               </div>
             </div>
+
+            <div style={{ paddingTop: '8px' }}>
+              <Button variant="primary" icon={ArrowRight} onClick={handleCreateMigrationTask}>
+                Add to Migration Runway
+              </Button>
+            </div>
           </div>
         )}
 
@@ -259,8 +317,8 @@ export default function AssetDetailDrawer({ isOpen, onClose, asset }) {
               <div style={{ fontSize: '11px', color: '#64748b' }}>2026-08-16 - Automated Policy Rule SEC-RSA-01</div>
             </div>
             <div style={{ borderLeft: '2px solid #1e40af', paddingLeft: '14px', marginLeft: '6px' }}>
-              <div style={{ fontSize: '12px', fontWeight: 600, color: '#1e40af' }}>Migration Plan Linked: TASK-MIG-101</div>
-              <div style={{ fontSize: '11px', color: '#64748b' }}>{asset.lastSeen || '2026-09-17'} - Assigned to Alex Chen</div>
+              <div style={{ fontSize: '12px', fontWeight: 600, color: '#1e40af' }}>Migration Plan Linked</div>
+              <div style={{ fontSize: '11px', color: '#64748b' }}>{asset.lastSeen || '2026-09-17'} - Assigned to SecOps</div>
             </div>
           </div>
         )}
