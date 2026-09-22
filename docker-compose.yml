@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  ecdat-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ecdat-api
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=development
+      - PORT=8000
+    volumes:
+      - ./backend/app:/app/app
+
+  ecdat-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecdat-unified
+    ports:
+      - "3000:8000"
+    environment:
+      - PORT=8000
+    depends_on:
+      - ecdat-api

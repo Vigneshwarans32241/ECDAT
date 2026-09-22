@@ -1,0 +1,1201 @@
+{
+  "cryptoAssets": [
+    {
+      "id": "CRYPTO-00182",
+      "assetType": "algorithm",
+      "algorithm": {
+        "family": "RSA",
+        "name": "RSA-2048",
+        "variant": "PSS",
+        "keySize": 2048
+      },
+      "usage": {
+        "purpose": "digital_signature",
+        "mode": null,
+        "padding": "PSS"
+      },
+      "context": {
+        "applicationId": "APP-001",
+        "applicationName": "Payment API",
+        "serviceId": "SVC-031",
+        "serviceName": "checkout-worker-pod",
+        "libraryId": "LIB-001",
+        "libraryName": "OpenSSL 3.0.2",
+        "protocolId": null
+      },
+      "classification": {
+        "dataSensitivity": "high",
+        "businessCriticality": "critical",
+        "internetFacing": true
+      },
+      "status": {
+        "classical": "acceptable",
+        "quantum": "vulnerable"
+      },
+      "confidence": 0.994,
+      "riskBand": "critical",
+      "migrationStatus": "in_progress",
+      "firstSeen": "2026-08-15T10:00:00Z",
+      "lastSeen": "2026-09-17T08:30:00Z"
+    },
+    {
+      "id": "CRYPTO-00149",
+      "assetType": "algorithm",
+      "algorithm": {
+        "family": "ECC",
+        "name": "ECDSA P-256",
+        "variant": "secp256r1",
+        "keySize": 256
+      },
+      "usage": {
+        "purpose": "token_signing",
+        "mode": null,
+        "padding": null
+      },
+      "context": {
+        "applicationId": "APP-003",
+        "applicationName": "Identity Service",
+        "serviceId": "SVC-042",
+        "serviceName": "oauth2-authorizer",
+        "libraryId": "LIB-003",
+        "libraryName": "Nimbus JOSE 9.3",
+        "protocolId": null
+      },
+      "classification": {
+        "dataSensitivity": "high",
+        "businessCriticality": "critical",
+        "internetFacing": true
+      },
+      "status": {
+        "classical": "acceptable",
+        "quantum": "vulnerable"
+      },
+      "confidence": 0.987,
+      "riskBand": "critical",
+      "migrationStatus": "assessed",
+      "firstSeen": "2026-07-20T14:00:00Z",
+      "lastSeen": "2026-09-17T08:30:00Z"
+    },
+    {
+      "id": "CRYPTO-00092",
+      "assetType": "algorithm",
+      "algorithm": {
+        "family": "ECC",
+        "name": "ECDH P-256",
+        "variant": "Ephemeral",
+        "keySize": 256
+      },
+      "usage": {
+        "purpose": "key_exchange",
+        "mode": null,
+        "padding": null
+      },
+      "context": {
+        "applicationId": "APP-002",
+        "applicationName": "Customer Portal",
+        "serviceId": "SVC-015",
+        "serviceName": "edge-alb-ingress",
+        "libraryId": "LIB-004",
+        "libraryName": "BoringSSL 202305",
+        "protocolId": "PROTO-001"
+      },
+      "classification": {
+        "dataSensitivity": "high",
+        "businessCriticality": "high",
+        "internetFacing": true
+      },
+      "status": {
+        "classical": "acceptable",
+        "quantum": "vulnerable"
+      },
+      "confidence": 0.95,
+      "riskBand": "high",
+      "migrationStatus": "not_started",
+      "firstSeen": "2026-06-10T09:00:00Z",
+      "lastSeen": "2026-09-17T08:30:00Z"
+    },
+    {
+      "id": "CRYPTO-00214",
+      "assetType": "protocol",
+      "algorithm": {
+        "family": "TLS",
+        "name": "TLS 1.2",
+        "variant": "RSA-AES",
+        "keySize": null
+      },
+      "usage": {
+        "purpose": "ingress_security",
+        "mode": "Cipher: AES128-SHA",
+        "padding": null
+      },
+      "context": {
+        "applicationId": "APP-007",
+        "applicationName": "Data Exchange Gateway",
+        "serviceId": "SVC-055",
+        "serviceName": "legacy-dmz-router",
+        "libraryId": "LIB-005",
+        "libraryName": "NGINX Core 1.22",
+        "protocolId": "PROTO-002"
+      },
+      "classification": {
+        "dataSensitivity": "medium",
+        "businessCriticality": "high",
+        "internetFacing": true
+      },
+      "status": {
+        "classical": "deprecated_suite",
+        "quantum": "vulnerable"
+      },
+      "confidence": 0.88,
+      "riskBand": "high",
+      "migrationStatus": "not_started",
+      "firstSeen": "2026-05-22T11:00:00Z",
+      "lastSeen": "2026-09-17T08:30:00Z"
+    },
+    {
+      "id": "CRYPTO-00088",
+      "assetType": "algorithm",
+      "algorithm": {
+        "family": "AES",
+        "name": "AES-256-GCM",
+        "variant": "Symmetric",
+        "keySize": 256
+      },
+      "usage": {
+        "purpose": "data_at_rest",
+        "mode": "GCM",
+        "padding": null
+      },
+      "context": {
+        "applicationId": "APP-005",
+        "applicationName": "Mobile Backend",
+        "serviceId": "SVC-028",
+        "serviceName": "user-vault-service",
+        "libraryId": "LIB-002",
+        "libraryName": "Java JCE (OpenJDK 21)",
+        "protocolId": null
+      },
+      "classification": {
+        "dataSensitivity": "high",
+        "businessCriticality": "high",
+        "internetFacing": false
+      },
+      "status": {
+        "classical": "strong",
+        "quantum": "resilient"
+      },
+      "confidence": 0.97,
+      "riskBand": "low",
+      "migrationStatus": "verified",
+      "firstSeen": "2026-04-05T16:00:00Z",
+      "lastSeen": "2026-09-17T08:30:00Z"
+    },
+    {
+      "id": "CRYPTO-00301",
+      "assetType": "algorithm",
+      "algorithm": {
+        "family": "PQC",
+        "name": "ML-KEM-768",
+        "variant": "Hybrid",
+        "keySize": 768
+      },
+      "usage": {
+        "purpose": "key_encapsulation",
+        "mode": "X25519 + Kyber-768",
+        "padding": null
+      },
+      "context": {
+        "applicationId": "APP-001",
+        "applicationName": "Payment API",
+        "serviceId": "SVC-060",
+        "serviceName": "payments-core-v2",
+        "libraryId": "LIB-006",
+        "libraryName": "liboqs 0.9.0",
+        "protocolId": null
+      },
+      "classification": {
+        "dataSensitivity": "high",
+        "businessCriticality": "critical",
+        "internetFacing": true
+      },
+      "status": {
+        "classical": "strong",
+        "quantum": "pqc_native"
+      },
+      "confidence": 0.92,
+      "riskBand": "low",
+      "migrationStatus": "verified",
+      "firstSeen": "2026-08-01T08:00:00Z",
+      "lastSeen": "2026-09-17T08:30:00Z"
+    },
+    {
+      "id": "CRYPTO-00078",
+      "assetType": "algorithm",
+      "algorithm": {
+        "family": "Hash",
+        "name": "SHA-1",
+        "variant": "HMAC",
+        "keySize": null
+      },
+      "usage": {
+        "purpose": "integrity",
+        "mode": "HMAC",
+        "padding": null
+      },
+      "context": {
+        "applicationId": "APP-006",
+        "applicationName": "Settlement Engine",
+        "serviceId": "SVC-033",
+        "serviceName": "ledger-batch",
+        "libraryId": "LIB-002",
+        "libraryName": "Java JCE (OpenJDK 21)",
+        "protocolId": null
+      },
+      "classification": {
+        "dataSensitivity": "high",
+        "businessCriticality": "critical",
+        "internetFacing": false
+      },
+      "status": {
+        "classical": "deprecated",
+        "quantum": "reduced_margin"
+      },
+      "confidence": 0.96,
+      "riskBand": "high",
+      "migrationStatus": "planned",
+      "firstSeen": "2026-03-10T12:00:00Z",
+      "lastSeen": "2026-09-17T08:30:00Z"
+    },
+    {
+      "id": "CRYPTO-00255",
+      "assetType": "algorithm",
+      "algorithm": {
+        "family": "RSA",
+        "name": "RSA-3072",
+        "variant": null,
+        "keySize": 3072
+      },
+      "usage": {
+        "purpose": "digital_signature",
+        "mode": null,
+        "padding": "PKCS1v15"
+      },
+      "context": {
+        "applicationId": "APP-004",
+        "applicationName": "Internal Analytics",
+        "serviceId": "SVC-048",
+        "serviceName": "report-signer",
+        "libraryId": "LIB-001",
+        "libraryName": "OpenSSL 3.0.2",
+        "protocolId": null
+      },
+      "classification": {
+        "dataSensitivity": "low",
+        "businessCriticality": "medium",
+        "internetFacing": false
+      },
+      "status": {
+        "classical": "acceptable",
+        "quantum": "vulnerable"
+      },
+      "confidence": 0.91,
+      "riskBand": "medium",
+      "migrationStatus": "not_started",
+      "firstSeen": "2026-06-15T10:00:00Z",
+      "lastSeen": "2026-09-17T08:30:00Z"
+    }
+  ],
+  "dashboard": {
+    "kpis": {
+      "totalAssets": 1284,
+      "quantumExposed": 326,
+      "quantumExposedPercent": 25.4,
+      "criticalFindings": 42,
+      "immediateReview": 8,
+      "migrationProgressPercent": 38,
+      "addressedAssets": 124,
+      "targetAssets": 326
+    },
+    "riskDistribution": [
+      {
+        "id": "critical",
+        "label": "Critical",
+        "value": 42,
+        "color": "#dc2626"
+      },
+      {
+        "id": "high",
+        "label": "High",
+        "value": 119,
+        "color": "#f97316"
+      },
+      {
+        "id": "medium",
+        "label": "Medium",
+        "value": 345,
+        "color": "#eab308"
+      },
+      {
+        "id": "low",
+        "label": "Low",
+        "value": 778,
+        "color": "#10b981"
+      }
+    ],
+    "algorithmDistribution": [
+      {
+        "algorithm": "RSA-2048",
+        "count": 248,
+        "quantum": "vulnerable"
+      },
+      {
+        "algorithm": "AES-256",
+        "count": 480,
+        "quantum": "safe"
+      },
+      {
+        "algorithm": "ECDSA P-256",
+        "count": 184,
+        "quantum": "vulnerable"
+      },
+      {
+        "algorithm": "ECDH P-256",
+        "count": 112,
+        "quantum": "vulnerable"
+      },
+      {
+        "algorithm": "SHA-256",
+        "count": 160,
+        "quantum": "safe"
+      },
+      {
+        "algorithm": "ML-KEM / PQC",
+        "count": 45,
+        "quantum": "pqc_native"
+      },
+      {
+        "algorithm": "3DES / SHA-1",
+        "count": 55,
+        "quantum": "vulnerable"
+      }
+    ],
+    "moscaSummary": {
+      "averageDeficitYears": 3.4,
+      "threatHorizonYear": 2034,
+      "urgentApplicationsCount": 3,
+      "safeApplicationsCount": 5,
+      "hndlExposedTotal": 74
+    }
+  },
+  "migrationTasks": [
+    {
+      "id": "TASK-MIG-101",
+      "title": "Migrate Payment API Signing to ML-DSA-65 Hybrid",
+      "assetId": "CRYPTO-00182",
+      "applicationId": "APP-001",
+      "applicationName": "Payment API",
+      "stage": "in_progress",
+      "priority": "critical",
+      "owner": "Alex Chen (SecOps)",
+      "dueDate": "2026-12-15",
+      "progressPercent": 65,
+      "estimatedEffort": "6 weeks",
+      "currentAlgorithm": "RSA-2048 PSS",
+      "targetAlgorithm": "ML-DSA-65",
+      "checklist": [
+        {
+          "id": "chk-1",
+          "text": "Benchmark ML-DSA keygen and verify CPU overhead",
+          "completed": true
+        },
+        {
+          "id": "chk-2",
+          "text": "Implement dual-signature wrapper library",
+          "completed": true
+        },
+        {
+          "id": "chk-3",
+          "text": "Deploy to Staging environment for load testing",
+          "completed": true
+        },
+        {
+          "id": "chk-4",
+          "text": "Update partner validation endpoints",
+          "completed": false
+        },
+        {
+          "id": "chk-5",
+          "text": "Production canary release (5% traffic)",
+          "completed": false
+        }
+      ],
+      "blastRadius": {
+        "services": 4,
+        "apis": 12,
+        "dependentTeams": 3
+      }
+    },
+    {
+      "id": "TASK-MIG-102",
+      "title": "Enable X25519MLKEM768 on Edge Ingress TLS",
+      "assetId": "CRYPTO-00092",
+      "applicationId": "APP-002",
+      "applicationName": "Customer Portal",
+      "stage": "testing",
+      "priority": "high",
+      "owner": "Elena Rostova (NetOps)",
+      "dueDate": "2026-11-30",
+      "progressPercent": 85,
+      "estimatedEffort": "3 weeks",
+      "currentAlgorithm": "ECDH P-256",
+      "targetAlgorithm": "X25519MLKEM768",
+      "checklist": [
+        {
+          "id": "chk-1",
+          "text": "Update Envoy ingress configs with PQC groups",
+          "completed": true
+        },
+        {
+          "id": "chk-2",
+          "text": "Test TLS 1.3 handshake compatibility matrix",
+          "completed": true
+        },
+        {
+          "id": "chk-3",
+          "text": "Monitor MTU packet fragmentation on mobile clients",
+          "completed": true
+        },
+        {
+          "id": "chk-4",
+          "text": "Roll out to 100% production traffic",
+          "completed": false
+        }
+      ],
+      "blastRadius": {
+        "services": 8,
+        "apis": 28,
+        "dependentTeams": 5
+      }
+    },
+    {
+      "id": "TASK-MIG-103",
+      "title": "Replace Identity OAuth Token Signer with ML-DSA-44",
+      "assetId": "CRYPTO-00149",
+      "applicationId": "APP-003",
+      "applicationName": "Identity Service",
+      "stage": "assessed",
+      "priority": "critical",
+      "owner": "Marcus Vance (IAM)",
+      "dueDate": "2027-02-28",
+      "progressPercent": 20,
+      "estimatedEffort": "8 weeks",
+      "currentAlgorithm": "ECDSA P-256",
+      "targetAlgorithm": "ML-DSA-44",
+      "checklist": [
+        {
+          "id": "chk-1",
+          "text": "Evaluate JWT payload size impact (ML-DSA vs ECDSA)",
+          "completed": true
+        },
+        {
+          "id": "chk-2",
+          "text": "Design dual JWKS key rotation scheme",
+          "completed": false
+        },
+        {
+          "id": "chk-3",
+          "text": "Patch downstream SDK verification helpers",
+          "completed": false
+        },
+        {
+          "id": "chk-4",
+          "text": "Staging verification across 15 client apps",
+          "completed": false
+        }
+      ],
+      "blastRadius": {
+        "services": 16,
+        "apis": 45,
+        "dependentTeams": 8
+      }
+    },
+    {
+      "id": "TASK-MIG-104",
+      "title": "Decommission 3DES in Legacy Settlement Batch",
+      "assetId": "CRYPTO-00215",
+      "applicationId": "APP-006",
+      "applicationName": "Settlement Engine",
+      "stage": "not_started",
+      "priority": "high",
+      "owner": "Sarah Jenkins (Core Banking)",
+      "dueDate": "2027-05-15",
+      "progressPercent": 0,
+      "estimatedEffort": "10 weeks",
+      "currentAlgorithm": "3DES",
+      "targetAlgorithm": "AES-256-GCM",
+      "checklist": [
+        {
+          "id": "chk-1",
+          "text": "Audit mainframe file transfer integrations",
+          "completed": false
+        },
+        {
+          "id": "chk-2",
+          "text": "Coordinate decryption test run with Federal Reserve spool",
+          "completed": false
+        },
+        {
+          "id": "chk-3",
+          "text": "Cut over batch encryption to AES-256-GCM",
+          "completed": false
+        }
+      ],
+      "blastRadius": {
+        "services": 2,
+        "apis": 3,
+        "dependentTeams": 2
+      }
+    },
+    {
+      "id": "TASK-MIG-105",
+      "title": "Verify Post-Quantum Key Encapsulation in Data Gateway",
+      "assetId": "CRYPTO-00088",
+      "applicationId": "APP-007",
+      "applicationName": "Data Exchange Gateway",
+      "stage": "completed",
+      "priority": "medium",
+      "owner": "Devon Lee (Security)",
+      "dueDate": "2026-09-01",
+      "progressPercent": 100,
+      "estimatedEffort": "4 weeks",
+      "currentAlgorithm": "RSA-3072",
+      "targetAlgorithm": "ML-KEM-768",
+      "checklist": [
+        {
+          "id": "chk-1",
+          "text": "Implement Kyber768/ML-KEM envelope encryption",
+          "completed": true
+        },
+        {
+          "id": "chk-2",
+          "text": "Run interoperability tests with B2B partner gateways",
+          "completed": true
+        },
+        {
+          "id": "chk-3",
+          "text": "Sign off security audit & update CBOM",
+          "completed": true
+        }
+      ],
+      "blastRadius": {
+        "services": 3,
+        "apis": 6,
+        "dependentTeams": 2
+      }
+    }
+  ],
+  "scans": [
+    {
+      "id": "SCAN-2026-09-17-001",
+      "name": "Scheduled Nightly Enterprise CBOM Discovery",
+      "target": "Full Enterprise Scope (8 Applications)",
+      "type": "Repository + Artifact + Container",
+      "status": "completed",
+      "startedAt": "2026-09-17T02:00:00Z",
+      "finishedAt": "2026-09-17T02:34:12Z",
+      "duration": "34m 12s",
+      "triggeredBy": "CI/CD Pipeline #8492",
+      "stats": {
+        "filesScanned": 14820,
+        "dependenciesAnalyzed": 2340,
+        "certificatesInspected": 184,
+        "cryptoAssetsDiscovered": 1284,
+        "quantumVulnerableFound": 326,
+        "criticalRisks": 42,
+        "newFindings": 3
+      }
+    },
+    {
+      "id": "SCAN-2026-09-16-003",
+      "name": "Payment Gateway Security Release Audit",
+      "target": "github.com/enterprise/checkout-service",
+      "type": "Source Repository AST",
+      "status": "completed",
+      "startedAt": "2026-09-16T14:10:00Z",
+      "finishedAt": "2026-09-16T14:18:45Z",
+      "duration": "8m 45s",
+      "triggeredBy": "Alex Chen (Manual)",
+      "stats": {
+        "filesScanned": 620,
+        "dependenciesAnalyzed": 145,
+        "certificatesInspected": 12,
+        "cryptoAssetsDiscovered": 68,
+        "quantumVulnerableFound": 24,
+        "criticalRisks": 8,
+        "newFindings": 0
+      }
+    },
+    {
+      "id": "SCAN-2026-09-15-002",
+      "name": "Identity Service Container Image Scan",
+      "target": "registry.corp.internal/iam/oauth-server:v2.4.0",
+      "type": "Container Binary Inspection",
+      "status": "completed",
+      "startedAt": "2026-09-15T09:00:00Z",
+      "finishedAt": "2026-09-15T09:12:30Z",
+      "duration": "12m 30s",
+      "triggeredBy": "Automated Registry Webhook",
+      "stats": {
+        "filesScanned": 3100,
+        "dependenciesAnalyzed": 412,
+        "certificatesInspected": 38,
+        "cryptoAssetsDiscovered": 94,
+        "quantumVulnerableFound": 31,
+        "criticalRisks": 6,
+        "newFindings": 1
+      }
+    },
+    {
+      "id": "SCAN-2026-09-17-002",
+      "name": "Partner Data Exchange Sandbox Validation",
+      "target": "Partner Ingress Endpoint (mTLS & TLS)",
+      "type": "Network Endpoint Scan",
+      "status": "running",
+      "startedAt": "2026-09-17T08:15:00Z",
+      "finishedAt": null,
+      "duration": "Running (15m)",
+      "triggeredBy": "Security Operations",
+      "stats": {
+        "filesScanned": 0,
+        "dependenciesAnalyzed": 0,
+        "certificatesInspected": 24,
+        "cryptoAssetsDiscovered": 18,
+        "quantumVulnerableFound": 7,
+        "criticalRisks": 2,
+        "newFindings": 0
+      }
+    }
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "id": "domain-banking",
+        "type": "domain",
+        "data": {
+          "label": "Core Banking & Payments",
+          "tier": 1,
+          "color": "#1e40af"
+        },
+        "position": {
+          "x": 250,
+          "y": 50
+        }
+      },
+      {
+        "id": "domain-identity",
+        "type": "domain",
+        "data": {
+          "label": "Customer Identity & Access",
+          "tier": 1,
+          "color": "#4338ca"
+        },
+        "position": {
+          "x": 750,
+          "y": 50
+        }
+      },
+      {
+        "id": "app-payment-api",
+        "type": "application",
+        "data": {
+          "label": "Payment API",
+          "appId": "APP-001",
+          "criticality": "critical",
+          "tier": 2
+        },
+        "position": {
+          "x": 150,
+          "y": 180
+        }
+      },
+      {
+        "id": "app-settlement",
+        "type": "application",
+        "data": {
+          "label": "Settlement Engine",
+          "appId": "APP-006",
+          "criticality": "critical",
+          "tier": 2
+        },
+        "position": {
+          "x": 380,
+          "y": 180
+        }
+      },
+      {
+        "id": "app-portal",
+        "type": "application",
+        "data": {
+          "label": "Customer Portal",
+          "appId": "APP-002",
+          "criticality": "high",
+          "tier": 2
+        },
+        "position": {
+          "x": 620,
+          "y": 180
+        }
+      },
+      {
+        "id": "app-identity",
+        "type": "application",
+        "data": {
+          "label": "Identity Service",
+          "appId": "APP-003",
+          "criticality": "critical",
+          "tier": 2
+        },
+        "position": {
+          "x": 880,
+          "y": 180
+        }
+      },
+      {
+        "id": "lib-openssl",
+        "type": "library",
+        "data": {
+          "label": "OpenSSL 3.0.2",
+          "version": "3.0.2",
+          "tier": 3
+        },
+        "position": {
+          "x": 180,
+          "y": 320
+        }
+      },
+      {
+        "id": "lib-jce",
+        "type": "library",
+        "data": {
+          "label": "Java JCE Provider",
+          "version": "OpenJDK 17",
+          "tier": 3
+        },
+        "position": {
+          "x": 420,
+          "y": 320
+        }
+      },
+      {
+        "id": "lib-boringssl",
+        "type": "library",
+        "data": {
+          "label": "BoringSSL Envoy",
+          "version": "202305",
+          "tier": 3
+        },
+        "position": {
+          "x": 660,
+          "y": 320
+        }
+      },
+      {
+        "id": "lib-nimbus",
+        "type": "library",
+        "data": {
+          "label": "Nimbus JOSE+JWT",
+          "version": "9.3",
+          "tier": 3
+        },
+        "position": {
+          "x": 900,
+          "y": 320
+        }
+      },
+      {
+        "id": "asset-rsa2048",
+        "type": "cryptoAsset",
+        "data": {
+          "label": "RSA-2048 PSS",
+          "assetId": "CRYPTO-00182",
+          "quantum": "vulnerable",
+          "risk": "critical",
+          "tier": 4
+        },
+        "position": {
+          "x": 150,
+          "y": 460
+        }
+      },
+      {
+        "id": "asset-aes256",
+        "type": "cryptoAsset",
+        "data": {
+          "label": "AES-256-GCM",
+          "assetId": "CRYPTO-00204",
+          "quantum": "safe",
+          "risk": "low",
+          "tier": 4
+        },
+        "position": {
+          "x": 380,
+          "y": 460
+        }
+      },
+      {
+        "id": "asset-ecdh",
+        "type": "cryptoAsset",
+        "data": {
+          "label": "ECDH P-256",
+          "assetId": "CRYPTO-00092",
+          "quantum": "vulnerable",
+          "risk": "high",
+          "tier": 4
+        },
+        "position": {
+          "x": 640,
+          "y": 460
+        }
+      },
+      {
+        "id": "asset-ecdsa",
+        "type": "cryptoAsset",
+        "data": {
+          "label": "ECDSA P-256",
+          "assetId": "CRYPTO-00149",
+          "quantum": "vulnerable",
+          "risk": "critical",
+          "tier": 4
+        },
+        "position": {
+          "x": 880,
+          "y": 460
+        }
+      },
+      {
+        "id": "asset-pqc-mlkem",
+        "type": "cryptoAsset",
+        "data": {
+          "label": "ML-KEM-768 (PQC)",
+          "assetId": "CRYPTO-00088",
+          "quantum": "pqc_native",
+          "risk": "low",
+          "tier": 4
+        },
+        "position": {
+          "x": 1100,
+          "y": 460
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "e1",
+        "source": "domain-banking",
+        "target": "app-payment-api",
+        "animated": true
+      },
+      {
+        "id": "e2",
+        "source": "domain-banking",
+        "target": "app-settlement"
+      },
+      {
+        "id": "e3",
+        "source": "domain-identity",
+        "target": "app-portal"
+      },
+      {
+        "id": "e4",
+        "source": "domain-identity",
+        "target": "app-identity",
+        "animated": true
+      },
+      {
+        "id": "e5",
+        "source": "app-payment-api",
+        "target": "lib-openssl"
+      },
+      {
+        "id": "e6",
+        "source": "app-settlement",
+        "target": "lib-jce"
+      },
+      {
+        "id": "e7",
+        "source": "app-portal",
+        "target": "lib-boringssl"
+      },
+      {
+        "id": "e8",
+        "source": "app-identity",
+        "target": "lib-nimbus"
+      },
+      {
+        "id": "e9",
+        "source": "lib-openssl",
+        "target": "asset-rsa2048",
+        "style": {
+          "stroke": "#dc2626",
+          "strokeWidth": 2
+        }
+      },
+      {
+        "id": "e10",
+        "source": "lib-jce",
+        "target": "asset-aes256",
+        "style": {
+          "stroke": "#10b981",
+          "strokeWidth": 2
+        }
+      },
+      {
+        "id": "e11",
+        "source": "lib-boringssl",
+        "target": "asset-ecdh",
+        "style": {
+          "stroke": "#f59e0b",
+          "strokeWidth": 2
+        }
+      },
+      {
+        "id": "e12",
+        "source": "lib-nimbus",
+        "target": "asset-ecdsa",
+        "style": {
+          "stroke": "#dc2626",
+          "strokeWidth": 2
+        }
+      },
+      {
+        "id": "e13",
+        "source": "lib-boringssl",
+        "target": "asset-pqc-mlkem",
+        "style": {
+          "stroke": "#06b6d4",
+          "strokeWidth": 2
+        }
+      }
+    ]
+  },
+  "recommendations": [
+    {
+      "id": "REC-001",
+      "assetId": "CRYPTO-00182",
+      "applicationId": "APP-001",
+      "applicationName": "Payment API",
+      "currentAlgorithm": "RSA-2048 PSS",
+      "currentPurpose": "digital_signature",
+      "recommendedAlgorithm": "ML-DSA-65 (Dilithium3) / Hybrid RSA",
+      "nistStatus": "FIPS 204 Standardized",
+      "strategy": "hybrid_dual_sign",
+      "complexity": "medium",
+      "compatibility": "high",
+      "priority": "critical",
+      "targetDate": "2026-12-15",
+      "status": "in_review",
+      "rationale": "NIST standardized lattice-based signature scheme. Hybrid mode allows legacy verifiers to maintain compliance while quantum protection is applied immediately.",
+      "steps": [
+        "Upgrade Go crypto wrapper to support composite X.509 dual signatures",
+        "Generate parallel ML-DSA-65 keypair alongside existing RSA-2048 key",
+        "Update payment payload format to include composite signature container",
+        "Staged rollout across checkout-worker instances"
+      ]
+    },
+    {
+      "id": "REC-002",
+      "assetId": "CRYPTO-00149",
+      "applicationId": "APP-003",
+      "applicationName": "Identity Service",
+      "currentAlgorithm": "ECDSA P-256",
+      "currentPurpose": "token_signing",
+      "recommendedAlgorithm": "ML-DSA-44 (Dilithium2)",
+      "nistStatus": "FIPS 204 Standardized",
+      "strategy": "direct_replacement",
+      "complexity": "low",
+      "compatibility": "high",
+      "priority": "high",
+      "targetDate": "2027-02-28",
+      "status": "planned",
+      "rationale": "Short-lived JWT tokens can be migrated directly without legacy backward compatibility constraints once internal gateways update public key JWKS.",
+      "steps": [
+        "Publish ML-DSA-44 public keys to /.well-known/jwks.json",
+        "Update Nimbus JOSE dependency to post-quantum enabled fork",
+        "Switch token signing header alg to ML-DSA-44"
+      ]
+    },
+    {
+      "id": "REC-003",
+      "assetId": "CRYPTO-00092",
+      "applicationId": "APP-002",
+      "applicationName": "Customer Portal",
+      "currentAlgorithm": "ECDH P-256",
+      "currentPurpose": "key_exchange",
+      "recommendedAlgorithm": "X25519MLKEM768 (Hybrid)",
+      "nistStatus": "FIPS 203 + IETF Draft",
+      "strategy": "hybrid_kex",
+      "complexity": "medium",
+      "compatibility": "high",
+      "priority": "high",
+      "targetDate": "2026-11-30",
+      "status": "in_progress",
+      "rationale": "Combines classical X25519 with lattice-based ML-KEM-768 for TLS 1.3 handshakes. Ensures no regression if lattice implementation has flaws.",
+      "steps": [
+        "Enable hybrid key exchange flag on Envoy edge gateway",
+        "Verify client handshake success rates across major browsers (Chrome 124+, Firefox 128+)",
+        "Enforce fallback telemetry to detect legacy client dropouts"
+      ]
+    },
+    {
+      "id": "REC-004",
+      "assetId": "CRYPTO-00204",
+      "applicationId": "APP-006",
+      "applicationName": "Settlement Engine",
+      "currentAlgorithm": "AES-256-GCM",
+      "currentPurpose": "data_at_rest_encryption",
+      "recommendedAlgorithm": "Retain AES-256-GCM",
+      "nistStatus": "Fully Quantum Resistant",
+      "strategy": "maintain",
+      "complexity": "none",
+      "compatibility": "full",
+      "priority": "low",
+      "targetDate": "2028-01-01",
+      "status": "completed",
+      "rationale": "Symmetric encryption with 256-bit key provides 128 bits of security against Grover search, sufficient for the foreseeable future.",
+      "steps": [
+        "Periodically rotate master data keys via KMS",
+        "Verify nonce uniqueness to prevent GCM reuse vulnerability"
+      ]
+    }
+  ],
+  "moscaAssessments": [
+    {
+      "applicationId": "APP-001",
+      "applicationName": "Payment API",
+      "assetId": "CRYPTO-00182",
+      "shelfLifeX": 10,
+      "migrationTimeY": 3,
+      "threatHorizonZ": 8,
+      "margin": -5,
+      "status": "urgent",
+      "hndlVulnerable": true,
+      "dataCategory": "Financial Records & Cardholder Data",
+      "narrative": "Migration should have begun 5 years ago. Stored transaction logs remain exposed to Harvest Now Decrypt Later."
+    },
+    {
+      "applicationId": "APP-003",
+      "applicationName": "Identity Service",
+      "assetId": "CRYPTO-00149",
+      "shelfLifeX": 5,
+      "migrationTimeY": 2,
+      "threatHorizonZ": 8,
+      "margin": 1,
+      "status": "vulnerable",
+      "hndlVulnerable": true,
+      "dataCategory": "Identity Claims & Credentials",
+      "narrative": "Tight positive margin of 1 year. Any delay in token signer migration will cause quantum exposure."
+    },
+    {
+      "applicationId": "APP-002",
+      "applicationName": "Customer Portal",
+      "assetId": "CRYPTO-00092",
+      "shelfLifeX": 7,
+      "migrationTimeY": 2,
+      "threatHorizonZ": 8,
+      "margin": -1,
+      "status": "urgent",
+      "hndlVulnerable": true,
+      "dataCategory": "Customer Communications & PII",
+      "narrative": "Passive interceptors can capture current TLS sessions and decrypt when quantum compute reaches capacity."
+    },
+    {
+      "applicationId": "APP-006",
+      "applicationName": "Settlement Engine",
+      "assetId": "CRYPTO-00204",
+      "shelfLifeX": 15,
+      "migrationTimeY": 1,
+      "threatHorizonZ": 8,
+      "margin": 4,
+      "status": "safe",
+      "hndlVulnerable": false,
+      "dataCategory": "Interbank Settlement Audit Ledger",
+      "narrative": "Protected by 256-bit symmetric strength, well within post-quantum safety threshold."
+    }
+  ],
+  "riskAssessments": [
+    {
+      "assetId": "CRYPTO-00182",
+      "overallScore": 88,
+      "riskBand": "critical",
+      "factors": {
+        "algorithmStrength": 75,
+        "quantumVulnerability": 95,
+        "businessCriticality": 90,
+        "exposureEnvironment": 85,
+        "hndlExposure": 90,
+        "migrationComplexity": 70
+      },
+      "drivers": [
+        "Vulnerable to Shor algorithm factoring within estimated 2030 horizon",
+        "Transaction signing in critical internet-facing Payment API",
+        "Harvest-Now-Decrypt-Later risk on stored financial audit logs"
+      ],
+      "recommendedAction": "Transition to dual-scheme ML-DSA (Dilithium) hybrid signature"
+    },
+    {
+      "assetId": "CRYPTO-00149",
+      "overallScore": 82,
+      "riskBand": "critical",
+      "factors": {
+        "algorithmStrength": 70,
+        "quantumVulnerability": 95,
+        "businessCriticality": 85,
+        "exposureEnvironment": 80,
+        "hndlExposure": 75,
+        "migrationComplexity": 65
+      },
+      "drivers": [
+        "Elliptic curve discrete log breakable by Shor algorithm",
+        "Federated OAuth tokens vulnerable to forgery post-CRQC",
+        "Tokens grant system-wide privilege elevation"
+      ],
+      "recommendedAction": "Migrate token issuer to ML-DSA-44 or SLH-DSA"
+    },
+    {
+      "assetId": "CRYPTO-00092",
+      "overallScore": 68,
+      "riskBand": "high",
+      "factors": {
+        "algorithmStrength": 65,
+        "quantumVulnerability": 90,
+        "businessCriticality": 75,
+        "exposureEnvironment": 85,
+        "hndlExposure": 85,
+        "migrationComplexity": 45
+      },
+      "drivers": [
+        "TLS session key exchange susceptible to passive eavesdropping and recording",
+        "Customer traffic can be retroactively decrypted upon CRQC availability"
+      ],
+      "recommendedAction": "Enable X25519MLKEM768 hybrid key encapsulation in ingress TLS"
+    },
+    {
+      "assetId": "CRYPTO-00204",
+      "overallScore": 22,
+      "riskBand": "low",
+      "factors": {
+        "algorithmStrength": 15,
+        "quantumVulnerability": 20,
+        "businessCriticality": 80,
+        "exposureEnvironment": 10,
+        "hndlExposure": 15,
+        "migrationComplexity": 25
+      },
+      "drivers": [
+        "AES-256 retains 128-bit quantum security against Grover algorithm",
+        "Internal ledger service, no direct internet exposure"
+      ],
+      "recommendedAction": "Maintain current AES-256-GCM; ensure adequate IV uniqueness"
+    }
+  ]
+}
