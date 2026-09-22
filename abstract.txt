@@ -1,0 +1,39 @@
+================================================================================
+ECDAT: Enterprise Cryptographic Discovery & Analysis Tool
+Automated Cryptographic Inventory (CBOM), Quantum Threat Assessment, and PQC Migration Planning
+================================================================================
+
+PROJECT ABSTRACT
+
+The rapid maturation of quantum computing presents an existential threat to modern enterprise security architectures. Virtually all contemporary public-key cryptography -- principally RSA, Elliptic Curve Cryptography (ECC), and traditional Diffie-Hellman key exchanges -- relies on mathematical problems (integer factorization and discrete logarithms) that can be solved in polynomial time by a Cryptographically Relevant Quantum Computer (CRQC) running Shor's algorithm. Compounding this challenge is the ongoing 'Harvest Now, Decrypt Later' (HNDL) operational reality, wherein adversaries intercept and archive encrypted enterprise data today, anticipating future decryption once quantum hardware becomes commercially or state viable.
+
+Despite widespread awareness of this impending transition, enterprise security teams face severe operational friction: widespread cryptographic blindness. Cryptographic primitives, key schedules, hardcoded curves, cipher suites, and third-party security providers are deeply fragmented across legacy monolithic systems, microservices, containerized workloads, and continuous integration pipelines. Organizations lack a single, auditable system of record detailing what cryptography exists, where it executes, what data it protects, and when it will become compromised.
+
+The Enterprise Cryptographic Discovery & Analysis Tool (ECDAT) is engineered to solve this discovery and transition crisis. ECDAT delivers a unified, evidence-based platform designed to discover cryptographic assets, generate standards-compliant Cryptographic Bills of Materials (CBOM), quantify both classical and post-quantum risk, and orchestrate phased migration roadmaps.
+
+Core Capabilities and Technical Solution:
+
+1. Automated Discovery & Normalized CBOM Generation
+   ECDAT continuously extracts cryptographic telemetry across codebases, configuration files, and software dependencies using static AST pattern matching and rule-based detectors. Each finding is captured with precise file-and-line evidence, detector provenance, and parent application context. These assets are compiled into an interoperable, industry-standard CycloneDX 1.6 Cryptographic Bill of Materials (CBOM), cataloging algorithms, key sizes, implementation libraries, and functional purposes (such as Data-in-Transit TLS, Digital Signatures, Token Signing, and Data-at-Rest encryption).
+
+2. Multi-Vector Risk & Vulnerability Scoring
+   The platform evaluates each cataloged component against multi-factor risk heuristics, factoring in classical deprecation status (NIST SP 800-131A), Shor quantum susceptibility, business criticality of the host application, and exposure vectors (Internet-facing perimeters versus internal sandboxes). High-risk assets are automatically flagged for immediate remediation.
+
+3. Mosca's Theorem Quantum Timing Sandbox
+   To translate abstract quantum risk into actionable boardroom timelines, ECDAT operationalizes Mosca's Theorem: (X + Y) > Z. By modeling the required confidentiality shelf-life of protected enterprise data (X) and the engineering lead-time required to refactor dependent systems (Y) against the estimated arrival window of a cryptographically relevant quantum computer (Z), ECDAT calculates an explicit quantum safety margin or deficit in years. This empowers leadership to prioritize migrations before confidential records enter irreversible exposure windows.
+
+4. Blast Radius & Dependency Lineage Mapping
+   Cryptographic migrations frequently fail due to hidden inter-service couplings. ECDAT models the enterprise cryptographic topology across a four-tier hierarchical graph: Business Domains, Applications, Cryptographic Providers/Libraries, and Underlying Cryptographic Assets. This allows architects to perform instant blast-radius assessments and evaluate the downstream impacts of deprecating or replacing specific cryptographic libraries.
+
+5. Standards-Aligned PQC Recommendations & Kanban Migration Runway
+   Rather than leaving remediation open-ended, ECDAT maps every Shor-vulnerable primitive to finalized National Institute of Standards and Technology (NIST) Post-Quantum Cryptography standards: FIPS 203 (ML-KEM for key encapsulation), FIPS 204 (ML-DSA for digital signatures), FIPS 205 (SLH-DSA for stateless hash-based signatures), and transitional X25519/ML-KEM hybrid schemes. Findings can be converted directly into trackable migration tasks across a five-phase Kanban runway (Not Started, Assessed & Planned, In Progress, Testing & Staging, and Production Cutover), complete with interactive verification checklists.
+
+6. Lightweight, Browser-Safe Architectural Execution
+   The prototype implementation provides a rich, responsive interface built with React, Vite, and TanStack Table v9, offering interactive AST code scanning, dynamic policy simulation, and instant CBOM downloads. The system architecture strictly decouples the visualization layer from data ingestion pipelines, establishing a clean path toward enterprise worker scaling, CI/CD integration, and centralized database persistence.
+
+Through this cohesive approach, ECDAT transitions post-quantum readiness from an ambiguous, panic-driven refactoring effort into a structured, auditable, and repeatable software engineering discipline.
+
+--------------------------------------------------------------------------------
+KEYWORDS:
+Cryptographic Bill of Materials (CBOM), Post-Quantum Cryptography (PQC), Mosca's Theorem, Quantum Vulnerability Assessment, Harvest Now Decrypt Later (HNDL), NIST FIPS 203/204/205, Cryptographic Agility, Cybersecurity Architecture.
+================================================================================
