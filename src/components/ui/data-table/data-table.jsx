@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTable, FlexRender } from '@tanstack/react-table';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../table';
 import { DataTablePagination } from './data-table-pagination';
@@ -43,14 +43,18 @@ export function DataTable({
     table.getState = () => table.state || {};
   }
 
-  // Notify parent of selected rows when rowSelection changes
+  // Track selection state changes safely without causing render loops
+  const prevSelectionRef = useRef(rowSelection);
   useEffect(() => {
-    if (onSelectionChange && table) {
-      const selectedRowModels = table.getFilteredSelectedRowModel ? table.getFilteredSelectedRowModel().rows : [];
-      const selectedData = selectedRowModels.map((r) => r.original);
-      onSelectionChange(selectedData, rowSelection, table);
+    if (prevSelectionRef.current !== rowSelection) {
+      prevSelectionRef.current = rowSelection;
+      if (onSelectionChange && table) {
+        const selectedRowModels = table.getFilteredSelectedRowModel ? table.getFilteredSelectedRowModel().rows : [];
+        const selectedData = selectedRowModels.map((r) => r.original);
+        onSelectionChange(selectedData, rowSelection);
+      }
     }
-  }, [rowSelection, table, onSelectionChange]);
+  }, [rowSelection, onSelectionChange]);
 
   const RenderComponent = table.FlexRender || FlexRender;
 
